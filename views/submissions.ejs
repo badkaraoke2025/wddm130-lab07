@@ -1,0 +1,47 @@
+
+<%- include('partials/header', { pageTitle: pageTitle, currentPage: currentPage }) %>
+<section class="hero">
+  <span class="badge">Stored submissions</span>
+  <h1>Saved submissions report</h1>
+  <p>This page reads the saved Lab 7 records from MongoDB and displays them in a table. Newest records appear first.</p>
+</section>
+
+<section class="card">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Campus</th>
+          <th>Tickets</th>
+          <th>Lunch</th>
+          <th>Subtotal</th>
+          <th>Tax</th>
+          <th>Total</th>
+          <th>Date Submitted</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (submissions.length === 0) { %>
+          <tr><td colspan="9">No submissions saved yet.</td></tr>
+        <% } %>
+        <% submissions.forEach(function(s) { %>
+          <tr>
+            <td><%= s.name %></td>
+            <td><%= s.email %></td>
+            <td><%= s.campus %></td>
+            <td><%= s.tickets %></td>
+            <td><%= s.lunch %></td>
+            <td>$<%= Number(s.subtotal).toFixed(2) %></td>
+            <td>$<%= Number(s.tax).toFixed(2) %></td>
+            <td>$<%= Number(s.total).toFixed(2) %></td>
+            <td><%= new Date(s.createdAt).toLocaleString('en-CA') %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

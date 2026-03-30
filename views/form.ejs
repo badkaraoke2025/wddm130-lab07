@@ -1,0 +1,89 @@
+
+<%- include('partials/header', { pageTitle: pageTitle, currentPage: currentPage }) %>
+<section class="hero">
+  <span class="badge">Lab 7</span>
+  <h1>Ticket order form with server-side validation and saved submissions</h1>
+  <p>This continues the Lab 6 form. Validation stays on the server. Valid submissions are saved to MongoDB. The submissions page reads the saved records back and shows them in a table.</p>
+</section>
+
+<section class="grid grid-2">
+  <div class="card">
+    <% if (errors && errors.length) { %>
+      <div class="errors">
+        <strong>Please fix the following:</strong>
+        <ul>
+          <% errors.forEach(function(error) { %><li><%= error.msg %></li><% }) %>
+        </ul>
+      </div>
+    <% } %>
+
+    <form method="POST" action="/submit">
+      <div class="form-grid">
+        <label for="name">Name</label>
+        <input id="name" type="text" name="name" value="<%= data.name || '' %>" placeholder="First Last">
+
+        <label for="email">Email</label>
+        <input id="email" type="email" name="email" value="<%= data.email || '' %>" placeholder="email@domain.com">
+
+        <label for="phone">Phone</label>
+        <input id="phone" type="text" name="phone" value="<%= data.phone || '' %>" placeholder="123-123-1234">
+
+        <label for="postcode">Post Code</label>
+        <input id="postcode" type="text" name="postcode" value="<%= data.postcode || '' %>" placeholder="A1A 1A1">
+
+        <label>Will you have lunch?</label>
+        <div class="inline">
+          <label><input type="radio" name="lunch" value="yes" <%= data.lunch === 'yes' ? 'checked' : '' %>> Yes</label>
+          <label><input type="radio" name="lunch" value="no" <%= data.lunch === 'no' ? 'checked' : '' %>> No</label>
+        </div>
+
+        <label for="tickets">Number of Tickets</label>
+        <select id="tickets" name="tickets">
+          <option value="">----- Select -----</option>
+          <option value="1" <%= String(data.tickets) === '1' ? 'selected' : '' %>>1</option>
+          <option value="2" <%= String(data.tickets) === '2' ? 'selected' : '' %>>2</option>
+          <option value="3" <%= String(data.tickets) === '3' ? 'selected' : '' %>>3</option>
+          <option value="4" <%= String(data.tickets) === '4' ? 'selected' : '' %>>4</option>
+          <option value="5" <%= String(data.tickets) === '5' ? 'selected' : '' %>>5</option>
+        </select>
+
+        <label for="campus">Which Campus?</label>
+        <select id="campus" name="campus">
+          <option value="">----- Select -----</option>
+          <option value="Doon" <%= data.campus === 'Doon' ? 'selected' : '' %>>Doon</option>
+          <option value="Waterloo" <%= data.campus === 'Waterloo' ? 'selected' : '' %>>Waterloo</option>
+          <option value="Cambridge" <%= data.campus === 'Cambridge' ? 'selected' : '' %>>Cambridge</option>
+        </select>
+
+        <div></div>
+        <div class="note">Custom rule: lunch can only be selected as Yes when buying 3 or more tickets.</div>
+
+        <div></div>
+        <div class="actions"><button class="btn" type="submit">Process Order</button></div>
+      </div>
+    </form>
+  </div>
+
+  <div class="card card--receipt">
+    <h2>Receipt</h2>
+    <% if (result) { %>
+      <div class="result-list">
+        <div class="k">Name</div><div><%= result.name %></div>
+        <div class="k">Email</div><div><%= result.email %></div>
+        <div class="k">Phone</div><div><%= result.phone %></div>
+        <div class="k">Post Code</div><div><%= result.postcode %></div>
+        <div class="k">Campus</div><div><%= result.campus %></div>
+        <div class="k">Tickets</div><div><%= result.tickets %></div>
+        <div class="k">Lunch</div><div><%= result.lunch %></div>
+        <div class="k">Subtotal</div><div>$<%= result.subtotal.toFixed(2) %></div>
+        <div class="k">Tax</div><div>$<%= result.tax.toFixed(2) %></div>
+        <div class="k">Total</div><div>$<%= result.total.toFixed(2) %></div>
+        <div class="k">Saved</div><div><%= result.savedMessage %></div>
+      </div>
+    <% } else { %>
+      <p class="lead">When the submission is valid, the server calculates the totals, saves the record to MongoDB, and renders the receipt here.</p>
+    <% } %>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
