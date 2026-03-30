@@ -1,0 +1,15 @@
+{
+  "name": "lab7-project",
+  "version": "1.0.0",
+  "description": "WDDM130 Lab 7 - Custom Validation, MongoDB Storage, and Submission Listing",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-validator": "^7.2.1",
+    "mongoose": "^8.18.0"
+  }
+}
